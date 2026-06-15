@@ -134,11 +134,17 @@ public class TravelersBackpack implements ModInitializer {
     }
 
     public static boolean enableAccessories() {
-        return accessoriesLoaded && TravelersBackpackConfig.SERVER.backpackSettings.backSlotIntegration.get();
+        if(!accessoriesLoaded || !TravelersBackpackConfig.serverSpec.isLoaded()) return false;
+        if(TravelersBackpackConfig.SERVER == null || TravelersBackpackConfig.SERVER.backpackSettings == null || TravelersBackpackConfig.SERVER.backpackSettings.backSlotIntegration == null) return false;
+
+        return TravelersBackpackConfig.SERVER.backpackSettings.backSlotIntegration.get();
     }
 
     public static boolean enableTrinkets() {
-        return trinketsLoaded && !enableAccessories() && TravelersBackpackConfig.SERVER.backpackSettings.backSlotIntegration.get();
+        if(!trinketsLoaded || enableAccessories() || !TravelersBackpackConfig.serverSpec.isLoaded()) return false;
+        if(TravelersBackpackConfig.SERVER == null || TravelersBackpackConfig.SERVER.backpackSettings == null || TravelersBackpackConfig.SERVER.backpackSettings.backSlotIntegration == null) return false;
+
+        return TravelersBackpackConfig.SERVER.backpackSettings.backSlotIntegration.get();
     }
 
     public static boolean isAnyGraveModInstalled() {
