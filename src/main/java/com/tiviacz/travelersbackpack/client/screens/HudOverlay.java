@@ -22,11 +22,14 @@ public class HudOverlay {
     public static final Identifier OVERLAY = Identifier.fromNamespaceAndPath(TravelersBackpack.MODID, "textures/gui/overlay.png");
 
     public static void renderOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+        if(!TravelersBackpackConfig.clientSpec.isLoaded() || !TravelersBackpackConfig.serverSpec.isLoaded()) return;
         if(!TravelersBackpackConfig.CLIENT.overlay.enableOverlay.get()) return;
 
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
         Window window = mc.getWindow();
+
+        if(player == null) return;
 
         if(!AttachmentUtils.isWearingBackpack(player) || mc.options.hideGui || (mc.gameMode != null && mc.gameMode.getPlayerMode() == GameType.SPECTATOR))
             return;
@@ -52,7 +55,7 @@ public class HudOverlay {
         }
 
         int tankSel = 0;
-        if(player != null && player.getMainHandItem().getItem() instanceof HoseItem) {
+        if(player.getMainHandItem().getItem() instanceof HoseItem) {
             tankSel = HoseItem.getHoseTank(player.getMainHandItem());
         }
 
